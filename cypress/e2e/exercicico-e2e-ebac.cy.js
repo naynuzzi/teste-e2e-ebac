@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
-
+import { faker } from '@faker-js/faker'
 import produtoPage from '../support/page_objects/produto.page';
 
-describe('Funcionalidade: Produtos', () => {
+describe('Funcionalidade:/ Produtos', () => {
    
     beforeEach(() => {
      
@@ -27,13 +27,36 @@ describe('Funcionalidade: Produtos', () => {
   
         cy.get('.woocommerce-message').should('contain', '“Ariel Roll Sleeve Sweatshirt” foi adicionado no seu carrinho.')
     });
-    it.only ('Deve adiconar 4 produtos no carrinho', () => {
+    it.only('Compra na loja Ebac shop', () => {
         produtoPage.buscarProduto('Ajax Full-Zip Sweatshirt')
         produtoPage.addProdutoCarrinho('M', 'Green', 4)
         cy.get('.woocommerce-message').should('contain', '4 × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
+        cy.get('.woocommerce-message > .button').click()
+        cy.get('.checkout-button').click()
+        cy.get('#billing_first_name').type(faker.person.firstName())
+        cy.get('#billing_last_name').type(faker.person.lastName())
+        cy.get('#billing_address_1').type('Rua 123teste')
+        cy.get('#billing_city').type('Sao Paulo')
+        cy.get('#billing_postcode').type('12345678')
+        cy.get('#billing_phone').type('1234567890')
+        cy.get('#billing_email').type(faker.internet.email())
+        cy.get('#createaccount').click()
+        cy.get('#account_password').type(faker.internet.password())
+        cy.get('.woocommerce-password-strength').click()
+        cy.get('#terms').click()
+        cy.get('#place_order').click()
+        cy.get('.woocommerce-info > .showlogin').click()
+        
     });
-
+    
+    
+    // it('Deve visitar a pagina do carrinho', () => {
+    //     cy.get('.woocommerce-message > .button').click()
+    // });
 });
+
+
+
 
 // context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
 //   /*  Como cliente 

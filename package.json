@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cypress": "^13.6.0"
+    "@faker-js/faker": "^9.2.0",
+    "cypress": "^13.6.0",
+    "faker": "^5.5.3"
   }
 }
