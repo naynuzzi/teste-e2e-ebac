@@ -27,7 +27,7 @@ describe('Funcionalidade:/ Produtos', () => {
   
         cy.get('.woocommerce-message').should('contain', '“Ariel Roll Sleeve Sweatshirt” foi adicionado no seu carrinho.')
     });
-    it.only('Compra na loja Ebac shop', () => {
+    it('Compra na loja Ebac shop', () => {
         produtoPage.buscarProduto('Ajax Full-Zip Sweatshirt')
         produtoPage.addProdutoCarrinho('M', 'Green', 4)
         cy.get('.woocommerce-message').should('contain', '4 × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
@@ -48,12 +48,33 @@ describe('Funcionalidade:/ Produtos', () => {
         cy.get('.woocommerce-info > .showlogin').click()
         
     });
+    it('compra na loja Ebac com comando customizado', () => {
+        produtoPage.buscarProduto('Ajax Full-Zip Sweatshirt')
+        produtoPage.addProdutoCarrinho('M', 'Green', 4)
+        cy.get('.woocommerce-message').should('contain', '4 × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
+        cy.get('.woocommerce-message > .button').click()
+        cy.get('.checkout-button').click()
+        cy.preCadastro(faker.person.firstName(), faker.person.lastName(),'Rua 123teste','Sao Paulo','12345678','1234567890', faker.internet.email(), faker.internet.password())
+        
+    });
     
+    it.only('Deve selecionar um produto da lista de produtos', () => {
+        cy.fixture('produtos').then(dados => {
+            produtoPage.buscarProduto(dados[0].nomeProduto)
+            produtoPage.addProdutoCarrinho(dados[0].tamanho, dados[0].cor, dados[0].quantidade)
+            cy.get('.woocommerce-message').should('contain', dados[0].nomeProduto)
+            //cy.get('.woocommerce-message').should('contain', dados[0].quantidade + '× “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
+            // cy.get('.woocommerce-message > .button').click()
+            // cy.get('.checkout-button').click()
+            // cy.preCadastro(faker.person.firstName(), faker.person.lastName(),'Rua 123teste','Sao Paulo','12345678','1234567890', faker.internet.email(), faker.internet.password())
+        })
+    });
+});
     
     // it('Deve visitar a pagina do carrinho', () => {
     //     cy.get('.woocommerce-message > .button').click()
     // });
-});
+
 
 
 
