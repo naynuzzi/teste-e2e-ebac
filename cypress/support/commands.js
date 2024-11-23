@@ -20,3 +20,13 @@ Cypress.Commands.add('preCadastro', (nome, sobrenome,endereco,cidade,cep,telefon
         cy.get('#place_order').click()
         cy.get('.woocommerce-info > .showlogin').click()
 });
+
+Cypress.Commands.add('preCadastro2', (endereco,cidade,cep,telefone) =>{
+    cy.get('#billing_address_1').type(endereco)
+    cy.get('#billing_city').type(cidade)
+    cy.get('#billing_postcode').type(cep)
+    cy.get('#billing_phone').type(telefone)
+
+
+});
+    

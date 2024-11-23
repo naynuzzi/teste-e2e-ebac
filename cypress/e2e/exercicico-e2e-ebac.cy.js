@@ -28,9 +28,8 @@ describe('Funcionalidade:/ Produtos', () => {
         cy.get('.woocommerce-message').should('contain', '“Ariel Roll Sleeve Sweatshirt” foi adicionado no seu carrinho.')
     });
     it('Compra na loja Ebac shop', () => {
-        produtoPage.buscarProduto('Ajax Full-Zip Sweatshirt')
-        produtoPage.addProdutoCarrinho('M', 'Green', 4)
-        cy.get('.woocommerce-message').should('contain', '4 × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
+        produtoPage.buscarProduto('Augusta Pullover Jacket')
+        produtoPage.addProdutoCarrinho('M', 'Blue', 4)
         cy.get('.woocommerce-message > .button').click()
         cy.get('.checkout-button').click()
         cy.get('#billing_first_name').type(faker.person.firstName())
@@ -49,26 +48,45 @@ describe('Funcionalidade:/ Produtos', () => {
         
     });
     it('compra na loja Ebac com comando customizado', () => {
-        produtoPage.buscarProduto('Ajax Full-Zip Sweatshirt')
+        produtoPage.buscarProduto('Ariel Roll Sleeve Sweatshirt')
         produtoPage.addProdutoCarrinho('M', 'Green', 4)
-        cy.get('.woocommerce-message').should('contain', '4 × “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
         cy.get('.woocommerce-message > .button').click()
         cy.get('.checkout-button').click()
         cy.preCadastro(faker.person.firstName(), faker.person.lastName(),'Rua 123teste','Sao Paulo','12345678','1234567890', faker.internet.email(), faker.internet.password())
         
     });
     
-    it.only('Deve selecionar um produto da lista de produtos', () => {
+    it('Deve selecionar um produto da lista de produtos e realizar a compra com comando customizado', () => {
         cy.fixture('produtos').then(dados => {
             produtoPage.buscarProduto(dados[0].nomeProduto)
             produtoPage.addProdutoCarrinho(dados[0].tamanho, dados[0].cor, dados[0].quantidade)
             cy.get('.woocommerce-message').should('contain', dados[0].nomeProduto)
-            //cy.get('.woocommerce-message').should('contain', dados[0].quantidade + '× “Ajax Full-Zip Sweatshirt” foram adicionados no seu carrinho.')
-            // cy.get('.woocommerce-message > .button').click()
-            // cy.get('.checkout-button').click()
-            // cy.preCadastro(faker.person.firstName(), faker.person.lastName(),'Rua 123teste','Sao Paulo','12345678','1234567890', faker.internet.email(), faker.internet.password())
+            
+            cy.get('.woocommerce-message > .button').click()
+            cy.get('.checkout-button').click()
+            cy.preCadastro(faker.person.firstName(), faker.person.lastName(),'Rua 123teste','Sao Paulo','12345678','1234567890', faker.internet.email(), faker.internet.password())
         })
     });
+
+    it.only('fazer registro e realizar compra na loja Ebac com comando customizado', () => {
+       cy.visit('minha-conta')
+        cy.get('#reg_email').type(faker.internet.email())
+        cy.get('#reg_password').type(faker.internet.password())
+        cy.get(':nth-child(4) > .button').click()
+        cy.get('.woocommerce-MyAccount-navigation-link--edit-account > a').click()
+        cy.get('#account_first_name').type(faker.person.firstName())
+        cy.get('#account_last_name').type(faker.person.lastName())
+        cy.get('.woocommerce-Button').click()
+        produtoPage.buscarProduto('Circe Hooded Ice Fleece')
+        produtoPage.addProdutoCarrinho('M', 'Green', 4)
+        cy.get('.woocommerce-message > .button').click()
+        cy.get('.checkout-button').click()
+        cy.preCadastro2('Rua 123teste','Sao Paulo','12345678','1234567890') 
+        cy.get('#terms').click()
+        cy.get('#place_order').click()
+           
+    });
+    
 });
     
     // it('Deve visitar a pagina do carrinho', () => {
